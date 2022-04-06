@@ -25,6 +25,9 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
   var selectedColor = Colors.black;
   var selectedTextColor = Colors.white;
   final ScrollController _scrollController = ScrollController();
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -49,8 +52,10 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
 
     return SafeArea(
         child: Scaffold(
+            key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true)),
+            drawer: CommonUtils().commonDrawerWidget(context),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, _scaffoldKey,)),
             body: SingleChildScrollView(
                 controller: _scrollController,
                 child: Container(
@@ -63,7 +68,7 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
                         const Padding(
                             padding: EdgeInsets.only(top: 30, bottom: 30),
                             child: Text(
-                              Strings.technologAlliedStructure,
+                              Strings.technologyAlliedStructureBuilding,
                               textAlign: TextAlign.center,
                               style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
                             )),

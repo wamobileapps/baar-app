@@ -6,7 +6,6 @@ import 'strings.dart';
 class CommonUtils {
   Widget customTextFormField(TextEditingController controller, TextStyle textStyle) {
     return TextFormField(
-      
       controller: controller,
       maxLines: 1,
       decoration: InputDecoration(
@@ -48,11 +47,11 @@ class CommonUtils {
     );
   }
 
-  Widget customAppBar(double width, BuildContext context, bool status) {
+  Widget customAppBar(double width, BuildContext context, bool status, [GlobalKey<ScaffoldState>? scaffoldKey]) {
     return AppBar(
       leading: GestureDetector(
           onTap: () {
-            if (status) Navigator.pop(context);
+            if(scaffoldKey!=null) scaffoldKey.currentState?.openDrawer();
           },
           child: Icon(
             Icons.menu,
@@ -75,33 +74,35 @@ class CommonUtils {
     );
   }
 
-  Widget commonRowField(double width, TextEditingController fieldController, String number, VoidCallback onTap,VoidCallback onCameraTap, bool isActive) {
+  Widget commonRowField(double width, TextEditingController fieldController, String number, VoidCallback onTap, VoidCallback onCameraTap, bool isActive) {
     return Padding(
-        padding:  EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.only(bottom: 10),
         child: Row(
           children: [
             Text(
               Strings.field + number.toString(),
-              style:  TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black),
+              style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black),
             ),
             Container(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 width: width / 2,
                 height: 35,
-                child: CommonUtils().customTextFormField(fieldController,  TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black))),
-            GestureDetector(onTap:onCameraTap,child:Icon(Icons.camera_alt, color: Colors.black, size: width / 10)),
+                child:
+                    CommonUtils().customTextFormField(fieldController, TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black))),
+            GestureDetector(onTap: onCameraTap, child: Icon(Icons.camera_alt, color: Colors.black, size: width / 10)),
             const SizedBox(width: 10),
-              GestureDetector(
-                  onTap: onTap,
-                  child: Image.asset(
-                    Images.voice,
-                    color: isActive ? Colors.red: Colors.black,
-                    width: width / 13,
-                    height: width / 13,
-                  ))
+            GestureDetector(
+                onTap: onTap,
+                child: Image.asset(
+                  Images.voice,
+                  color: isActive ? Colors.red : Colors.black,
+                  width: width / 13,
+                  height: width / 13,
+                ))
           ],
         ));
   }
+
   Widget commonRowTextField(bool isCameraShow, bool isAudioShow, double width, TextEditingController fieldController, String text, VoidCallback onTap) {
     return Padding(
         padding: const EdgeInsets.only(bottom: 10),
@@ -151,39 +152,96 @@ class CommonUtils {
                 style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 12.0, fontWeight: FontWeight.w500, color: isSelected == i ? selectedTextColor : selectedColor))));
   }
 
-  showBottomSheetImagePicker(BuildContext context, double width,){
+  showBottomSheetImagePicker(
+    BuildContext context,
+    double width,
+      VoidCallback onCameraTap,
+      VoidCallback onGalleryTap,
+  ) {
     showModalBottomSheet<void>(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+      ),
+      backgroundColor: CustomColor.themeColor,
       builder: (BuildContext context) {
         return SizedBox(
           height: 200,
           child: Center(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Stack(children: [
-                  Container(
-                    width: 80,
-                      height:80,
-                      decoration:BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(40),
+                GestureDetector(onTap: onCameraTap,child:Padding(
+                    padding: EdgeInsets.only(left: 50,top:30),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          Images.camera,
+                          width: 130,
+                          height: 130,
                         ),
-                        border: Border.all(
-                          width: 3,
-                          color: Colors.green,
-                          style: BorderStyle.solid,
+                        Text(Strings.camera,style: TextStyle(color: Colors.white),)
+                      ],
+                    ))),
+                GestureDetector(onTap: onGalleryTap,child:Padding(
+                    padding: EdgeInsets.only(right: 50,top:30),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          Images.picture,
+                          width: 130,
+                          height: 130,
                         ),
-                      ),child:Container()),
-                  Container(height:50,width:50,child:Image.asset(Images.camera,width: 50,))
-                ],),
+                        Text(Strings.gallery,style: TextStyle(color: Colors.white))
+                      ],
+                    ))),
 
-                Image.asset(Images.picture,width: width/9,)
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget commonDrawerWidget(BuildContext context){
+    return Drawer(
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: Text("Abhishek Mishra"),
+            accountEmail: Text("abhishekm977@gmail.com"),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.orange,
+              child: Text(
+                "A",
+                style: TextStyle(fontSize: 40.0),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home), title: Text("Home"),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings), title: Text("Settings"),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.contacts), title: Text("Contact Us"),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

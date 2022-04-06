@@ -53,7 +53,7 @@ class _FormPageState extends State<FormPage> {
 
   late File _image;
   final picker = ImagePicker();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -105,8 +105,10 @@ class _FormPageState extends State<FormPage> {
 
     return SafeArea(
         child: Scaffold(
+            key: _scaffoldKey,
+            drawer: CommonUtils().commonDrawerWidget(context),
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
             body: Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(30),
@@ -128,8 +130,14 @@ class _FormPageState extends State<FormPage> {
                         isActiveThree= false;
                       });
                     },(){
-                     CommonUtils().showBottomSheetImagePicker(context,width);
-                     // getCamera();
+                     CommonUtils().showBottomSheetImagePicker(context,width,(){
+                       Navigator.pop(context);
+                       getCamera();
+                     },(){
+                       Navigator.pop(context);
+                       getImage();
+                     });
+
                     },isActive),
 
                     CommonUtils().commonRowField(width, _fieldTwoController, " 2", () {

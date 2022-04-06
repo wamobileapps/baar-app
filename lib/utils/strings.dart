@@ -53,9 +53,12 @@ class Strings {
   static const rccPedestal = "RCC Pedestal";
   static const basePlate = "Base plate/packing plate, ribs, stiffeners, fasteners";
   static const corrosionObservation = "Corrosion observation with location";
-  static const technologAlliedStructure = "Technology/Allied Structure/Building";
-  static const please_enter_email = "Please enter the email";
-  static const please_enter_password = "Please enter the password";
-  static const please_enter_valid_email = "Please enter the valid email";
-  static const password_valid = "password length > 6";
+  static const technologyAlliedStructureBuilding = "Technology/Allied Structure/Building";
+  static const pleaseEnterEmail = "Please enter the email";
+  static const pleaseEnterPassword = "Please enter the password";
+  static const pleaseEnterValidEmail = "Please enter the valid email";
+  static const passwordValid = "password length > 6";
+  static const chooseImageFrom = "Choose Image from:-";
+  static const camera = "Camera";
+  static const gallery = "Gallery";
 }

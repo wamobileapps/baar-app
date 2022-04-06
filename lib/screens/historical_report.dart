@@ -12,7 +12,7 @@ class HistoricalReportPage extends StatefulWidget {
 
 class _HistoricalReportPageState extends State<HistoricalReportPage> {
   final TextEditingController _userNameController = TextEditingController();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -25,8 +25,10 @@ class _HistoricalReportPageState extends State<HistoricalReportPage> {
 
     return SafeArea(
         child: Scaffold(
+            key: _scaffoldKey,
+            drawer: CommonUtils().commonDrawerWidget(context),
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
             body: Container(
                 height: height,
                 width: width,

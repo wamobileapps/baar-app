@@ -93,13 +93,13 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.only(top: 130),
                         child: CommonUtils().customButton(const Size(250, 44), Strings.login, () {
                           if(_userNameController.text.toString().trim().isEmpty || _userNameController.text.toString().trim() == "" ) {
-                            showSnackBar(Strings.please_enter_email,context);
+                            showSnackBar(Strings.pleaseEnterEmail,context);
                           } else if(!isValidEmail(_userNameController.text.toString().trim())) {
-                            showSnackBar(Strings.please_enter_valid_email,context);
+                            showSnackBar(Strings.pleaseEnterValidEmail,context);
                           } else if(_passwordController.text.trim().isEmpty || _passwordController.text.trim() == "") {
-                            showSnackBar(Strings.please_enter_password,context);
+                            showSnackBar(Strings.pleaseEnterPassword,context);
                           } else if(_passwordController.text.trim().length <=6) {
-                            showSnackBar(Strings.password_valid,context);
+                            showSnackBar(Strings.passwordValid,context);
                           } else {
                             prefs?.setBool(Constants.LOGIN, true);
                             Navigator.pushNamed(context, '/home');

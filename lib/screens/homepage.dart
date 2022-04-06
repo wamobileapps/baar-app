@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _userNameController = TextEditingController();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -25,8 +25,10 @@ class _HomePageState extends State<HomePage> {
 
     return SafeArea(
         child: Scaffold(
+            key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true)),
+            drawer: CommonUtils().commonDrawerWidget(context),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
             body: Container(
                 height: height,
                 width: width,
@@ -120,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                             })),
                   ],
                 ))));
+
   }
 
   Widget getRow(int i, double width) {

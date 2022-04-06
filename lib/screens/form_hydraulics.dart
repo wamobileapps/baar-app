@@ -25,6 +25,8 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
   var selectedColor = Colors.black;
   var selectedTextColor = Colors.white;
   final ScrollController _scrollController = ScrollController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -49,8 +51,10 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
 
     return SafeArea(
         child: Scaffold(
+            key: _scaffoldKey,
+            drawer: CommonUtils().commonDrawerWidget(context),
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
             body: SingleChildScrollView(
                 controller: _scrollController,
                 child: Container(
