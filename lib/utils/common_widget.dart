@@ -1,5 +1,8 @@
+import 'package:Baar/main.dart';
+import 'package:Baar/utils/constants.dart';
 import 'package:Baar/utils/custom_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'image.dart';
 import 'strings.dart';
 
@@ -51,11 +54,11 @@ class CommonUtils {
     return AppBar(
       leading: GestureDetector(
           onTap: () {
-            if(scaffoldKey!=null) scaffoldKey.currentState?.openDrawer();
+            if (scaffoldKey != null) scaffoldKey.currentState?.openDrawer();
+            else if(scaffoldKey==null && status) Navigator.pop(context);
           },
-          child: Icon(
-            Icons.menu,
-            color: status ? Colors.white : CustomColor.themeColor,
+          child: Icon( (scaffoldKey==null && status) ? Icons.arrow_back : Icons.menu,
+            color: (status)  ? Colors.white : CustomColor.themeColor,
           )),
       automaticallyImplyLeading: false,
       toolbarHeight: 80,
@@ -155,13 +158,13 @@ class CommonUtils {
   showBottomSheetImagePicker(
     BuildContext context,
     double width,
-      VoidCallback onCameraTap,
-      VoidCallback onGalleryTap,
+    VoidCallback onCameraTap,
+    VoidCallback onGalleryTap,
   ) {
     showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18)),
       ),
       backgroundColor: CustomColor.themeColor,
       builder: (BuildContext context) {
@@ -172,31 +175,37 @@ class CommonUtils {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(onTap: onCameraTap,child:Padding(
-                    padding: EdgeInsets.only(left: 50,top:30),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          Images.camera,
-                          width: 130,
-                          height: 130,
-                        ),
-                        Text(Strings.camera,style: TextStyle(color: Colors.white),)
-                      ],
-                    ))),
-                GestureDetector(onTap: onGalleryTap,child:Padding(
-                    padding: EdgeInsets.only(right: 50,top:30),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          Images.picture,
-                          width: 130,
-                          height: 130,
-                        ),
-                        Text(Strings.gallery,style: TextStyle(color: Colors.white))
-                      ],
-                    ))),
-
+                GestureDetector(
+                    onTap: onCameraTap,
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 50, top: 30),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              Images.camera,
+                              width: 130,
+                              height: 130,
+                            ),
+                            Text(
+                              Strings.camera,
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ))),
+                GestureDetector(
+                    onTap: onGalleryTap,
+                    child: Padding(
+                        padding: EdgeInsets.only(right: 50, top: 30),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              Images.picture,
+                              width: 130,
+                              height: 130,
+                            ),
+                            Text(Strings.gallery, style: TextStyle(color: Colors.white))
+                          ],
+                        ))),
               ],
             ),
           ),
@@ -205,43 +214,78 @@ class CommonUtils {
     );
   }
 
-  Widget commonDrawerWidget(BuildContext context){
+  Widget commonDrawerWidget(BuildContext context) {
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text("Abhishek Mishra"),
-            accountEmail: Text("abhishekm977@gmail.com"),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.orange,
-              child: Text(
-                "A",
-                style: TextStyle(fontSize: 40.0),
-              ),
+
+          DrawerHeader(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 56,
+                  backgroundColor: Colors.blueGrey,
+                  child: ClipOval(child: Image.asset("assets/images/portrait.png",fit: BoxFit.fill)),),
+                  SizedBox(width: 10,),
+                Text('John Doe',style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.white)),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: CustomColor.themeColor,
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home), title: Text("Home"),
+            leading: Image.asset(Images.home,width:35,height: 35,),
+            title: const Text(Strings.home,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, "/home");
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings), title: Text("Settings"),
+            leading: Image.asset(Images.hisReport,width:35,height: 35,),
+            title: const Text(Strings.historicalReport,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black),),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, "/historical");
             },
           ),
           ListTile(
-            leading: Icon(Icons.contacts), title: Text("Contact Us"),
+            leading: Image.asset(Images.drawing,width:35,height: 35,),
+            title: const Text(Strings.drawing,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
             onTap: () {
-              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Image.asset(Images.logout,width:35,height: 35,),
+            title: const Text(Strings.logout,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
+            onTap: () {
+              prefs?.setBool(Constants.LOGIN, false);
+              Navigator.pushReplacementNamed(context, '/login');
             },
           ),
         ],
       ),
     );
   }
+
+ Widget customBottomnaviagtion(int _selectedIndex,  Function(dynamic index) onClick,) {
+    return BottomNavigationBar(
+        unselectedItemColor: Colors.grey,
+        backgroundColor: CustomColor.themeColor,
+        items:  <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Image.asset(Images.home,color: _selectedIndex==0?Colors.white:Colors.grey,width: 25,height: 25,), label: Strings.home,),
+          BottomNavigationBarItem(icon: Image.asset(Images.document,color: _selectedIndex==1?Colors.white:Colors.grey,width: 25,height: 25,), label: Strings.document, ),
+          BottomNavigationBarItem(icon: Image.asset(Images.setting,color: _selectedIndex==2?Colors.white:Colors.grey,width: 25,height: 25,), label: Strings.setting,),
+        ],
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.white,
+        iconSize: 40,
+        onTap: (index) {
+         onClick(index);
+        },
+        elevation: 5);
+ }
 }

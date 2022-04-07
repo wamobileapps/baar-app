@@ -1,5 +1,6 @@
+import 'package:Baar/utils/common_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_recognition/speech_recognition.dart';
+//import 'package:speech_recognition/speech_recognition.dart';
 import '../utils/common_widget.dart';
 import '../utils/strings.dart';
 
@@ -15,7 +16,7 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
   final TextEditingController _fieldTwoController = TextEditingController();
   final TextEditingController _fieldThreeController = TextEditingController();
   final TextEditingController _fieldFourController = TextEditingController();
-  late SpeechRecognition _speech;
+  //late SpeechRecognition _speech;
 
   bool _speechRecognitionAvailable = false;
   bool _isListening = false;
@@ -30,11 +31,11 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
   @override
   void initState() {
     super.initState();
-    activateSpeechRecognizer();
+    //activateSpeechRecognizer();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  void activateSpeechRecognizer() {
+  /*void activateSpeechRecognizer() {
     _speech = SpeechRecognition();
     _speech.setAvailabilityHandler(onSpeechAvailability);
     _speech.setCurrentLocaleHandler(onCurrentLocale);
@@ -42,7 +43,7 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
     _speech.setRecognitionResultHandler(onRecognitionResult);
     _speech.setRecognitionCompleteHandler(onRecognitionComplete);
     _speech.activate().then((res) => setState(() => _speechRecognitionAvailable = res));
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +53,9 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
     return SafeArea(
         child: Scaffold(
             key: _scaffoldKey,
-            drawer: CommonUtils().commonDrawerWidget(context),
+            /*drawer: CommonUtils().commonDrawerWidget(context),*/
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, null)),
             body: SingleChildScrollView(
                 controller: _scrollController,
                 child: Container(
@@ -162,16 +163,16 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.submit, () {
-                                  Navigator.pushNamed(context, '/home');
+                                  Navigator.pushReplacementNamed(context, '/home');
                                 }, 10),
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.saveAsDraft, () {
                                   Navigator.pushNamed(context, '/draft');
                                 }, 10),
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.cancel, () {
-                                  Navigator.pushNamed(context, '/historical');
+                                  Navigator.pushReplacementNamed(context, '/home');
                                 }, 10),
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.addNewEntry, () {
-                                  Navigator.pushNamed(context, '/historical');
+                                  showSnackBar("In process....", context);
                                 }, 10),
                               ],
                             ))
@@ -180,12 +181,12 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
   }
 
 //How many  images added for one field  and after  upload a image where to show the uploaded image
-  void start() => _speech.listen(locale: 'en_US').then((result) => {print('_MyAppState.start => result ${result}'), _fieldOneController.text = result.toString()});
+ /* void start() => _speech.listen(locale: 'en_US').then((result) => {print('_MyAppState.start => result ${result}'), _fieldOneController.text = result.toString()});
 
   void cancel() => _speech.cancel().then((result) => setState(() => _isListening = result));
 
   void stop() => _speech.stop().then((result) => setState(() => _isListening = result));
-
+*/
   void onSpeechAvailability(bool result) => setState(() => _speechRecognitionAvailable = result);
 
   void onCurrentLocale(String locale) {
@@ -197,5 +198,4 @@ class _FormHydraulicPageState extends State<FormHydraulicPage> {
   void onRecognitionResult(String text) => setState(() => transcription = text);
 
   void onRecognitionComplete() => setState(() => _isListening = false);
-
 }

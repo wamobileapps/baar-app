@@ -10,9 +10,8 @@ class DraftPage extends StatefulWidget {
 }
 
 class _DraftPageState extends State<DraftPage> {
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  int _selectedIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -25,10 +24,10 @@ class _DraftPageState extends State<DraftPage> {
 
     return SafeArea(
         child: Scaffold(
-             key: _scaffoldKey,
-            drawer: CommonUtils().commonDrawerWidget(context),
+            key: _scaffoldKey,
+            /*drawer: CommonUtils().commonDrawerWidget(context),*/
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, null)),
             body: Container(
                 height: height,
                 width: width,
@@ -58,7 +57,8 @@ class _DraftPageState extends State<DraftPage> {
                           print("testing");
                         }, 18))
                   ],
-                ))));
+                )),
+            ));
   }
 
   Widget getRow(int i, double width) {

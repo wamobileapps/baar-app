@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:speech_recognition/speech_recognition.dart';
+//import 'package:speech_recognition/speech_recognition.dart';
+import '../utils/common_utils.dart';
 import '../utils/common_widget.dart';
 import '../utils/strings.dart';
 
@@ -15,7 +16,7 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
   final TextEditingController _fieldTwoController = TextEditingController();
   final TextEditingController _fieldThreeController = TextEditingController();
   final TextEditingController _fieldFourController = TextEditingController();
-  late SpeechRecognition _speech;
+ // late SpeechRecognition _speech;
 
   bool _speechRecognitionAvailable = false;
   bool _isListening = false;
@@ -31,11 +32,11 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
   @override
   void initState() {
     super.initState();
-    activateSpeechRecognizer();
+   // activateSpeechRecognizer();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  void activateSpeechRecognizer() {
+  /*void activateSpeechRecognizer() {
     _speech = SpeechRecognition();
     _speech.setAvailabilityHandler(onSpeechAvailability);
     _speech.setCurrentLocaleHandler(onCurrentLocale);
@@ -43,7 +44,7 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
     _speech.setRecognitionResultHandler(onRecognitionResult);
     _speech.setRecognitionCompleteHandler(onRecognitionComplete);
     _speech.activate().then((res) => setState(() => _speechRecognitionAvailable = res));
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +55,15 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
         child: Scaffold(
             key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            drawer: CommonUtils().commonDrawerWidget(context),
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, _scaffoldKey,)),
+            /*drawer: CommonUtils().commonDrawerWidget(context),*/
+            appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(80),
+                child: CommonUtils().customAppBar(
+                  width,
+                  context,
+                  true,
+                  null,
+                )),
             body: SingleChildScrollView(
                 controller: _scrollController,
                 child: Container(
@@ -138,9 +146,7 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
                                 alignment: Alignment.center,
                                 width: width / 5.6,
                                 height: 55,
-                                decoration: BoxDecoration(
-                                    color: isSelected == 1 ? selectedColor : selectedTextColor,
-                                    border: Border.all(color: Colors.black, width: 2)),
+                                decoration: BoxDecoration(color: isSelected == 1 ? selectedColor : selectedTextColor, border: Border.all(color: Colors.black, width: 2)),
                                 child: Text(
                                   Strings.trestiesAndVertical,
                                   textAlign: TextAlign.center,
@@ -171,7 +177,6 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
                         Padding(padding: const EdgeInsets.only(top: 10), child: CommonUtils().commonRowTextField(false, true, width, _fieldTwoController, Strings.rccPedestal, () {})),
                         Padding(padding: const EdgeInsets.only(top: 10), child: CommonUtils().commonRowTextField(false, true, width, _fieldTwoController, Strings.basePlate, () {})),
                         Padding(padding: const EdgeInsets.only(top: 10), child: CommonUtils().commonRowTextField(false, true, width, _fieldTwoController, Strings.corrosionObservation, () {})),
-
                         Container(
                             height: height / 7,
                             alignment: Alignment.bottomCenter,
@@ -180,16 +185,16 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.submit, () {
-                                  Navigator.pushNamed(context, '/home');
+                                  Navigator.pushReplacementNamed(context, '/home');
                                 }, 10),
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.saveAsDraft, () {
                                   Navigator.pushNamed(context, '/draft');
                                 }, 10),
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.cancel, () {
-                                  Navigator.pushNamed(context, '/historical');
+                                  Navigator.pushReplacementNamed(context, '/home');
                                 }, 10),
                                 CommonUtils().customButton(Size(width / 4.8, 45), Strings.addNewEntry, () {
-                                  Navigator.pushNamed(context, '/formHydraulic');
+                                  showSnackBar("In process....", context);
                                 }, 10),
                               ],
                             ))
@@ -198,11 +203,11 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
   }
 
 //How many  images added for one field  and after  upload a image where to show the uploaded image
-  void start() => _speech.listen(locale: 'en_US').then((result) => {print('_MyAppState.start => result ${result}'), _fieldOneController.text = result.toString()});
+  /*void start() => _speech.listen(locale: 'en_US').then((result) => {print('_MyAppState.start => result ${result}'), _fieldOneController.text = result.toString()});
 
   void cancel() => _speech.cancel().then((result) => setState(() => _isListening = result));
 
-  void stop() => _speech.stop().then((result) => setState(() => _isListening = result));
+  void stop() => _speech.stop().then((result) => setState(() => _isListening = result));*/
 
   void onSpeechAvailability(bool result) => setState(() => _speechRecognitionAvailable = result);
 
@@ -215,6 +220,4 @@ class _FormBuildingPageState extends State<FormBuildingPage> {
   void onRecognitionResult(String text) => setState(() => transcription = text);
 
   void onRecognitionComplete() => setState(() => _isListening = false);
-
-
 }

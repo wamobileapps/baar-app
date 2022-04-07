@@ -6,30 +6,41 @@ import 'package:Baar/screens/historical_report.dart';
 import 'package:Baar/screens/homepage.dart';
 import 'package:Baar/screens/section_selection.dart';
 import 'package:Baar/screens/signup_user_type.dart';
+import 'package:Baar/screens/splashscreen.dart';
+import 'package:Baar/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'screens/login.dart';
 import 'utils/strings.dart';
 
 SharedPreferences? prefs;
 
 void main() {
-  runApp(const MyApp());
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  runApp(MyApp());
 }
 
 initialPref() async {
- prefs = await SharedPreferences.getInstance();
- print(prefs);
+  prefs = await SharedPreferences.getInstance();
+  print(prefs);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  String route = "/";
+  MyApp({Key? key}) : super(key: key);
+
+  void initialization(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 1));
+    FlutterNativeSplash.remove();
+  }
 
   @override
   Widget build(BuildContext context) {
+    initialization(context);
     return MaterialApp(
       title: Strings.appName,
       builder: (context, widget) => ResponsiveWrapper.builder(
@@ -47,13 +58,14 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: "/",
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const LoginPage(),
+        '/': (context) => const SplashScreen(),
+        '/login': (context) => const LoginPage(),
         '/second': (context) => const SignupUserTypePage(),
         '/selection': (context) => const SectionSelectionPage(),
         '/form': (context) => const FormPage(),

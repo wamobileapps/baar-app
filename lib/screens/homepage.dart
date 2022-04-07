@@ -1,6 +1,7 @@
 import 'package:Baar/utils/custom_color.dart';
 import 'package:flutter/material.dart';
 import '../utils/common_widget.dart';
+import '../utils/image.dart';
 import '../utils/strings.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,12 +11,22 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+List<Tab> _tabs = [
+  const Tab(text: Strings.historicalSpaceReport),
+  const Tab(text: Strings.draft),
+  const Tab(text: Strings.submittedSpaceReport),
+];
+
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   final TextEditingController _userNameController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late TabController _tabController;
+  int _selectedIndex = 0;
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.animateTo(2);
   }
 
   @override
@@ -28,8 +39,8 @@ class _HomePageState extends State<HomePage> {
             key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
             drawer: CommonUtils().commonDrawerWidget(context),
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
-            body: Container(
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, _scaffoldKey)),
+            body: _selectedIndex==0? Container(
                 height: height,
                 width: width,
                 padding: const EdgeInsets.all(30),
@@ -49,8 +60,8 @@ class _HomePageState extends State<HomePage> {
                                 controller: _userNameController,
                                 decoration: InputDecoration(
                                   hintText: Strings.search,
-                                  hintStyle: TextStyle(fontSize: 18, color: CustomColor.grey),
-                                  contentPadding: EdgeInsets.only(top: 20), // add padding to adjust text
+                                  hintStyle: const TextStyle(fontSize: 18, color: CustomColor.grey),
+                                  contentPadding: const EdgeInsets.only(top: 20), // add padding to adjust text
                                   isDense: true,
                                   prefixIcon: const Padding(
                                     padding: EdgeInsets.all(0.0),
@@ -78,51 +89,72 @@ class _HomePageState extends State<HomePage> {
                                 style: const TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black))),
                       ],
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(top: 80, bottom: 10),
-                        child: Text(
-                          Strings.historicalReport,
-                          style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
-                        )),
-                    Container(
-                        height: height / 3,
-                        padding: const EdgeInsets.only(top: 120, bottom: 10),
-                        child: ListView.builder(
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int index) {
-                              return getRow(index, width);
-                            })),
-                    const Padding(
-                        padding: EdgeInsets.only(top: 285, bottom: 10),
-                        child: Text(
-                          Strings.draft,
-                          style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
-                        )),
-                    Container(
-                        height: height / 1.8,
-                        padding: const EdgeInsets.only(top: 330, bottom: 10),
-                        child: ListView.builder(
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int index) {
-                              return getRow(index, width);
-                            })),
-                    const Padding(
-                        padding: EdgeInsets.only(top: 480, bottom: 10),
-                        child: Text(
-                          Strings.submittedReport,
-                          style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
-                        )),
-                    Container(
-                        height: height / 1.2,
-                        padding: const EdgeInsets.only(top: 520, bottom: 10),
-                        child: ListView.builder(
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int index) {
-                              return getRow(index, width);
-                            })),
+                    Padding(
+                      padding: EdgeInsets.only(top: 80, bottom: 10),
+                      child: DefaultTabController(
+                        length: 3,
+                        child: Scaffold(
+                          appBar: AppBar(
+                            toolbarHeight: 3,
+                            bottom: TabBar(
+                              labelPadding: EdgeInsets.only(left: 25, right: 25),
+                              labelColor: Colors.white,
+                              unselectedLabelColor: Colors.grey,
+                              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                              unselectedLabelStyle: const TextStyle(fontStyle: FontStyle.italic),
+                              overlayColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                                if (states.contains(MaterialState.hovered)) {
+                                  return Colors.pinkAccent;
+                                }
+                                return Colors.transparent;
+                              }),
+                              isScrollable: true,
+                              physics: BouncingScrollPhysics(),
+                              onTap: (int index) {
+                                print('Tab $index is tapped');
+                              },
+                              tabs: _tabs,
+                            ),
+                            backgroundColor: CustomColor.themeColor,
+                          ),
+                          body: TabBarView(
+                            physics: BouncingScrollPhysics(),
+                            // Uncomment the line below and remove DefaultTabController if you want to use a custom TabController
+                            // controller: _tabController,
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                  child: ListView.builder(
+                                      itemCount: 6,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return getRow(index, MediaQuery.of(context).size.width);
+                                      })),
+                              Container(
+                                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                  child: ListView.builder(
+                                      itemCount: 2,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return getRow(index, MediaQuery.of(context).size.width);
+                                      })),
+                              Container(
+                                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                  child: ListView.builder(
+                                      itemCount: 4,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return getRow(index, MediaQuery.of(context).size.width);
+                                      })),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
-                ))));
-
+                )):_selectedIndex==1?Text(Strings.document, style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)):Text(Strings.setting, style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+            bottomNavigationBar: CommonUtils().customBottomnaviagtion(_selectedIndex,(index){
+                setState(() {
+                  _selectedIndex = index;
+                });
+            })));
   }
 
   Widget getRow(int i, double width) {

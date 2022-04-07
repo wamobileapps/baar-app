@@ -21,11 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    initialPref();
-
-    Future.delayed(const Duration(seconds: 5),(){
-      if((prefs?.getBool(Constants.LOGIN)??false)==true) Navigator.pushNamed(context, '/home');
-    });
   }
 
   @override
@@ -58,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             width: width / 2.0,
-                            height:40,
+                            height: 40,
                             child: CommonUtils().customTextFormField(
                                 _userNameController, const TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.black))),
                       ],
@@ -77,7 +72,8 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             width: width / 2.0,
                             height: 40,
-                            child: CommonUtils().customTextFormField(_passwordController, const TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black))),
+                            child: CommonUtils().customTextFormField(
+                                _passwordController, const TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black))),
                       ],
                     ),
                     const Padding(
@@ -92,23 +88,21 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                         padding: const EdgeInsets.only(top: 130),
                         child: CommonUtils().customButton(const Size(250, 44), Strings.login, () {
-                          if(_userNameController.text.toString().trim().isEmpty || _userNameController.text.toString().trim() == "" ) {
-                            showSnackBar(Strings.pleaseEnterEmail,context);
-                          } else if(!isValidEmail(_userNameController.text.toString().trim())) {
-                            showSnackBar(Strings.pleaseEnterValidEmail,context);
-                          } else if(_passwordController.text.trim().isEmpty || _passwordController.text.trim() == "") {
-                            showSnackBar(Strings.pleaseEnterPassword,context);
-                          } else if(_passwordController.text.trim().length <=6) {
-                            showSnackBar(Strings.passwordValid,context);
+                          if (_userNameController.text.toString().trim().isEmpty || _userNameController.text.toString().trim() == "") {
+                            showSnackBar(Strings.pleaseEnterUsername, context);
+                          }  else if (_passwordController.text.trim().isEmpty || _passwordController.text.trim() == "") {
+                            showSnackBar(Strings.pleaseEnterPassword, context);
+                          } else if (_passwordController.text.trim().length <= 6) {
+                            showSnackBar(Strings.passwordValid, context);
                           } else {
                             prefs?.setBool(Constants.LOGIN, true);
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.pushReplacementNamed(context, '/home');
                           }
                         }, 18)),
                     Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: CommonUtils().customButton(const Size(250, 44), Strings.signup, () {
-                          Navigator.pushNamed(context, '/second');
+                          Navigator.pushReplacementNamed(context, '/second');
                         }, 18)),
                   ],
                 ),

@@ -26,9 +26,9 @@ class _HistoricalReportPageState extends State<HistoricalReportPage> {
     return SafeArea(
         child: Scaffold(
             key: _scaffoldKey,
-            drawer: CommonUtils().commonDrawerWidget(context),
+           /* drawer: CommonUtils().commonDrawerWidget(context),*/
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, null)),
             body: Container(
                 height: height,
                 width: width,

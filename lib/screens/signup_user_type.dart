@@ -1,7 +1,10 @@
 import 'package:Baar/utils/all_enum.dart';
 import 'package:Baar/utils/common_widget.dart';
+import 'package:Baar/utils/custom_color.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/common_utils.dart';
 import '../utils/strings.dart';
 
 class SignupUserTypePage extends StatefulWidget {
@@ -142,9 +145,41 @@ class _SignupUserTypePageState extends State<SignupUserTypePage> {
                     ),
                     Padding(
                         padding: const EdgeInsets.only(top: 200),
-                        child: CommonUtils().customButton(Size(250, 44), Strings.signup, () {
-                          print("testing");
+                        child: CommonUtils().customButton(const Size(250, 44), Strings.signup, () {
+                          if (_gatepassController.text.toString().trim().isEmpty || _gatepassController.text.toString().trim() == "") {
+                           showSnackBar( user == UserType.contractor? Strings.pleaseEnterGatePassNumber:Strings.pleaseEnterPersonalNumber, context);
+                          } else if (_userNameController.text.toString().trim().isEmpty || _userNameController.text.toString().trim() == "") {
+                            showSnackBar(Strings.pleaseEnterUsername, context);
+                          }else if (_passwordController.text.trim().isEmpty || _passwordController.text.trim() == "") {
+                            showSnackBar(Strings.pleaseEnterPassword, context);
+                          } else if (_passwordController.text.trim().length <= 6) {
+                            showSnackBar(Strings.passwordValid, context);
+                          }else if (_confirmPasswordController.text.trim().isEmpty || _confirmPasswordController.text.trim() == "") {
+                            showSnackBar(Strings.pleaseEnterConfirmPassword, context);
+                          }else if (_confirmPasswordController.text.trim().length <= 6) {
+                            showSnackBar(Strings.confirmPasswordValid, context);
+                          }else if (_confirmPasswordController.text.trim() != _passwordController.text.trim()) {
+                            showSnackBar(Strings.confirmPasswordNotMatch, context);
+                          }else {
+                            showSnackBar("Successfully", context);
+                            Navigator.pushReplacementNamed(context, '/login');
+                          }
                         }, 18)),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text.rich(TextSpan(
+                            text: Strings.alreadyAccount,
+                            style: const TextStyle(color: CustomColor.themeColor, fontSize: 14, fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                            children: <InlineSpan>[
+                              TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => {
+                                        Navigator.pushReplacementNamed(context, '/login'),
+                                      },
+                                text: Strings.login,
+                                style: const TextStyle(color: CustomColor.navyBlue, fontSize: 14, fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                              )
+                            ]))),
                   ],
                 ))));
   }

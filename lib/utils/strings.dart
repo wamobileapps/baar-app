@@ -27,7 +27,9 @@ class Strings {
   static const draft = "Drafts";
   static const search = "Search";
   static const submittedReport = "Submitted Reports";
+  static const submittedSpaceReport = "Submitted\nReports";
   static const historicalReport = "Historical Reports";
+  static const historicalSpaceReport = "Historical\nReports";
   static const oilTank = "Oil Tank";
   static const mainPumpUnit = "Main Pump Unit";
   static const recirculationPump = "Recirculation Pump";
@@ -54,11 +56,21 @@ class Strings {
   static const basePlate = "Base plate/packing plate, ribs, stiffeners, fasteners";
   static const corrosionObservation = "Corrosion observation with location";
   static const technologyAlliedStructureBuilding = "Technology/Allied Structure/Building";
-  static const pleaseEnterEmail = "Please enter the email";
+  static const pleaseEnterGatePassNumber= "Please enter the gate pass number";
+  static const pleaseEnterPersonalNumber= "Please enter the personal number";
+  static const pleaseEnterUsername = "Please enter the username";
   static const pleaseEnterPassword = "Please enter the password";
-  static const pleaseEnterValidEmail = "Please enter the valid email";
+  static const pleaseEnterConfirmPassword = "Please enter the confirm password";
   static const passwordValid = "password length > 6";
+  static const confirmPasswordValid = "confirm password length > 6";
+  static const confirmPasswordNotMatch = "confirm password not match with password";
   static const chooseImageFrom = "Choose Image from:-";
   static const camera = "Camera";
   static const gallery = "Gallery";
+  static const home = "Home";
+  static const drawing = "Drawings";
+  static const logout = "Logout";
+  static const document = "Documents";
+  static const setting = "Settings";
+  static const alreadyAccount = "Already have an account? ";
 }

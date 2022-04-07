@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:speech_recognition/speech_recognition.dart';
+//import 'package:speech_recognition/speech_recognition.dart';
 import '../utils/common_widget.dart';
 import '../utils/custom_color.dart';
 import '../utils/strings.dart';
@@ -34,22 +34,22 @@ class _FormPageState extends State<FormPage> {
   final TextEditingController _fieldTwoController = TextEditingController();
   final TextEditingController _fieldThreeController = TextEditingController();
   final TextEditingController _fieldFourController = TextEditingController();
-  late SpeechRecognition _speech;
+  //late SpeechRecognition _speech;
 
-  bool _speechRecognitionAvailable = false;
+ // bool _speechRecognitionAvailable = false;
   bool _isListening = false;
 
   String transcription = '';
 
-   bool isActive=false;
-   bool isActiveOne=false;
-   bool isActiveTwo=false;
-   bool isActiveThree=false;
+  bool isActive = false;
+  bool isActiveOne = false;
+  bool isActiveTwo = false;
+  bool isActiveThree = false;
 
   Language selectedLang = languages.first;
-  var status="0";
+  var status = "0";
 
-  var hintText="";
+  var hintText = "";
 
   late File _image;
   final picker = ImagePicker();
@@ -65,6 +65,7 @@ class _FormPageState extends State<FormPage> {
       }
     });
   }
+
   Future getCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
@@ -80,11 +81,11 @@ class _FormPageState extends State<FormPage> {
   @override
   void initState() {
     super.initState();
-    activateSpeechRecognizer();
+    //activateSpeechRecognizer();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  void activateSpeechRecognizer() {
+/*  void activateSpeechRecognizer() {
     print('_MyAppState.activateSpeechRecognizer... ');
     _speech = new SpeechRecognition();
     _speech.setAvailabilityHandler(onSpeechAvailability);
@@ -93,12 +94,12 @@ class _FormPageState extends State<FormPage> {
     _speech.setRecognitionResultHandler(onRecognitionResult);
     _speech.setRecognitionCompleteHandler(onRecognitionComplete);
     _speech.activate().then((res) => setState(() => _speechRecognitionAvailable = res));
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-    status= args["status"] ?? "0";
+    status = args["status"] ?? "0";
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
@@ -106,70 +107,86 @@ class _FormPageState extends State<FormPage> {
     return SafeArea(
         child: Scaffold(
             key: _scaffoldKey,
-            drawer: CommonUtils().commonDrawerWidget(context),
+            /*drawer: CommonUtils().commonDrawerWidget(context),*/
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true,_scaffoldKey)),
+            appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, null)),
             body: Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
-                     Padding(
+                    Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 30),
-                        child:  Text(status  =="0" ? Strings.hydraulics: Strings.buildingStructure,
+                        child: Text(
+                          status == "0" ? Strings.hydraulics : Strings.buildingStructure,
                           style: const TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
                         )),
                     CommonUtils().commonRowField(width, _fieldOneController, " 1", () {
-                      _speechRecognitionAvailable && !_isListening ? start() : null;
+                      //_speechRecognitionAvailable && !_isListening ? start() : null;
                       setState(() {
-                        isActive=true;
-                        isActiveOne= false;
-                        isActiveTwo= false;
-                        isActiveThree= false;
+                        isActive = true;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = false;
                       });
-                    },(){
-                     CommonUtils().showBottomSheetImagePicker(context,width,(){
-                       Navigator.pop(context);
-                       getCamera();
-                     },(){
-                       Navigator.pop(context);
-                       getImage();
-                     });
-
-                    },isActive),
-
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActive),
                     CommonUtils().commonRowField(width, _fieldTwoController, " 2", () {
                       setState(() {
-                        isActive=false;
-                        isActiveOne= true;
-                        isActiveTwo= false;
-                        isActiveThree= false;
+                        isActive = false;
+                        isActiveOne = true;
+                        isActiveTwo = false;
+                        isActiveThree = false;
                       });
-                    },(){
-                      getImage();
-                    },isActiveOne),
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveOne),
                     CommonUtils().commonRowField(width, _fieldThreeController, " 3", () {
                       setState(() {
-                        isActive=false;
-                        isActiveOne= false;
-                        isActiveTwo= true;
-                        isActiveThree= false;
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = true;
+                        isActiveThree = false;
                       });
-                    },(){
-                      getImage();
-                    },isActiveTwo),
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveTwo),
                     CommonUtils().commonRowField(width, _fieldFourController, " 4", () {
                       setState(() {
-                        isActive=false;
-                        isActiveOne= false;
-                        isActiveTwo= false;
-                        isActiveThree= true;
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = true;
                       });
-                    },(){
-                      getImage();
-                    },isActiveThree),
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveThree),
                     Container(
                         height: height / 2.8,
                         alignment: Alignment.bottomCenter,
@@ -178,13 +195,13 @@ class _FormPageState extends State<FormPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CommonUtils().customButton(Size(width / 4.5, 40), Strings.submit, () {
-                               Navigator.pushNamed(context, status=="0"?'/formHydraulic':'/formBuilding');
+                              Navigator.pushNamed(context, status == "0" ? '/formHydraulic' : '/formBuilding');
                             }, 14),
                             CommonUtils().customButton(Size(width / 4, 40), Strings.saveAsDraft, () {
                               Navigator.pushNamed(context, '/draft');
                             }, 14),
                             CommonUtils().customButton(Size(width / 4.5, 40), Strings.cancel, () {
-                              Navigator.pushNamed(context, '/historical');
+                              Navigator.pushReplacementNamed(context, '/home');
                             }, 14),
                           ],
                         ))
@@ -192,36 +209,23 @@ class _FormPageState extends State<FormPage> {
                 ))));
   }
 
-  void start() => _speech.listen(locale: selectedLang.code).then((result) => {
-    print('_MyAppState.start => result ${result}'),
-  });
+  /*void start() => _speech.listen(locale: selectedLang.code).then((result) => {
+        print('_MyAppState.start => result ${result}'),
+      });
 
   void cancel() => _speech.cancel().then((result) => setState(() => _isListening = result));
 
-  void stop() => _speech.stop().then((result) => setState(() => {_isListening = result,isActive=false}));
+  void stop() => _speech.stop().then((result) => setState(() => {_isListening = result, isActive = false}));*/
 
-  void onSpeechAvailability(bool result) => setState(() =>
-  {
-    if(!result) isActive=false
-  });
+  void onSpeechAvailability(bool result) => setState(() => {if (!result) isActive = false});
 
   void onCurrentLocale(String locale) {
     setState(() => selectedLang = languages.firstWhere((l) => l.code == locale));
   }
 
-  void onRecognitionStarted() => setState(() =>{ _isListening = true,
-    hintText="Typing...."
-  });
+  void onRecognitionStarted() => setState(() => {_isListening = true, hintText = "Typing...."});
 
-  void onRecognitionResult(String text) => setState(() =>
-  {
-     transcription = text,
-    _fieldOneController.text = text.toString()
-  }
-  );
+  void onRecognitionResult(String text) => setState(() => {transcription = text, _fieldOneController.text = text.toString()});
 
-  void onRecognitionComplete() => setState(() =>{ _isListening = false,
-    hintText="",
-    isActive=false
-  });
+  void onRecognitionComplete() => setState(() => {_isListening = false, hintText = "", isActive = false});
 }
