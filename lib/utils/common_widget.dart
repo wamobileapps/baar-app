@@ -54,11 +54,13 @@ class CommonUtils {
     return AppBar(
       leading: GestureDetector(
           onTap: () {
-            if (scaffoldKey != null) scaffoldKey.currentState?.openDrawer();
-            else if(scaffoldKey==null && status) Navigator.pop(context);
+            if (scaffoldKey != null)
+              scaffoldKey.currentState?.openDrawer();
+            else if (scaffoldKey == null && status) Navigator.pop(context);
           },
-          child: Icon( (scaffoldKey==null && status) ? Icons.arrow_back : Icons.menu,
-            color: (status)  ? Colors.white : CustomColor.themeColor,
+          child: Icon(
+            (scaffoldKey == null && status) ? Icons.arrow_back : Icons.menu,
+            color: (status) ? Colors.white : CustomColor.themeColor,
           )),
       automaticallyImplyLeading: false,
       toolbarHeight: 80,
@@ -82,25 +84,30 @@ class CommonUtils {
         padding: EdgeInsets.only(bottom: 10),
         child: Row(
           children: [
-            Text(
-              Strings.field + number.toString(),
-              style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black),
-            ),
             Container(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                width: width / 2,
-                height: 35,
+                width: width / 4,
+                alignment: Alignment.center,
+                child: Text(
+                  number,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black),
+                )),
+            Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                width: width / 2.2,
+                height: 55,
                 child:
                     CommonUtils().customTextFormField(fieldController, TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black))),
-            GestureDetector(onTap: onCameraTap, child: Icon(Icons.camera_alt, color: Colors.black, size: width / 10)),
-            const SizedBox(width: 10),
+            GestureDetector(onTap: onCameraTap, child:  Icon(Icons.camera_alt, color: Colors.black, size: width / 12)),
+            const SizedBox(width: 5),
             GestureDetector(
                 onTap: onTap,
                 child: Image.asset(
                   Images.voice,
                   color: isActive ? Colors.red : Colors.black,
-                  width: width / 13,
-                  height: width / 13,
+                  width: width / 15,
+                  height: width / 15,
                 ))
           ],
         ));
@@ -154,6 +161,7 @@ class CommonUtils {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 12.0, fontWeight: FontWeight.w500, color: isSelected == i ? selectedTextColor : selectedColor))));
   }
+
 
   showBottomSheetImagePicker(
     BuildContext context,
@@ -220,7 +228,6 @@ class CommonUtils {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-
           DrawerHeader(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -228,38 +235,57 @@ class CommonUtils {
                 CircleAvatar(
                   radius: 56,
                   backgroundColor: Colors.blueGrey,
-                  child: ClipOval(child: Image.asset("assets/images/portrait.png",fit: BoxFit.fill)),),
-                  SizedBox(width: 10,),
-                Text('John Doe',style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.white)),
+                  child: ClipOval(child: Image.asset("assets/images/portrait.png", fit: BoxFit.fill)),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('John Doe', style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.white)),
               ],
             ),
-            decoration: BoxDecoration(
-              color: CustomColor.themeColor,
-            ),
+            decoration: const BoxDecoration(color: CustomColor.themeColor),
           ),
           ListTile(
-            leading: Image.asset(Images.home,width:35,height: 35,),
-            title: const Text(Strings.home,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
+            leading: Image.asset(
+              Images.home,
+              width: 35,
+              height: 35,
+            ),
+            title: const Text(Strings.home, style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
             onTap: () {
               Navigator.pushReplacementNamed(context, "/home");
             },
           ),
           ListTile(
-            leading: Image.asset(Images.hisReport,width:35,height: 35,),
-            title: const Text(Strings.historicalReport,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black),),
+            leading: Image.asset(
+              Images.hisReport,
+              width: 35,
+              height: 35,
+            ),
+            title: const Text(
+              Strings.historicalReport,
+              style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black),
+            ),
             onTap: () {
               Navigator.pushNamed(context, "/historical");
             },
           ),
           ListTile(
-            leading: Image.asset(Images.drawing,width:35,height: 35,),
-            title: const Text(Strings.drawing,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
-            onTap: () {
-            },
+            leading: Image.asset(
+              Images.drawing,
+              width: 35,
+              height: 35,
+            ),
+            title: const Text(Strings.drawing, style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
+            onTap: () {},
           ),
           ListTile(
-            leading: Image.asset(Images.logout,width:35,height: 35,),
-            title: const Text(Strings.logout,style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
+            leading: Image.asset(
+              Images.logout,
+              width: 35,
+              height: 35,
+            ),
+            title: const Text(Strings.logout, style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black)),
             onTap: () {
               prefs?.setBool(Constants.LOGIN, false);
               Navigator.pushReplacementNamed(context, '/login');
@@ -270,22 +296,116 @@ class CommonUtils {
     );
   }
 
- Widget customBottomnaviagtion(int _selectedIndex,  Function(dynamic index) onClick,) {
+  Widget customBottomnaviagtion(
+    int _selectedIndex,
+    Function(dynamic index) onClick,
+  ) {
     return BottomNavigationBar(
         unselectedItemColor: Colors.grey,
         backgroundColor: CustomColor.themeColor,
-        items:  <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Image.asset(Images.home,color: _selectedIndex==0?Colors.white:Colors.grey,width: 25,height: 25,), label: Strings.home,),
-          BottomNavigationBarItem(icon: Image.asset(Images.document,color: _selectedIndex==1?Colors.white:Colors.grey,width: 25,height: 25,), label: Strings.document, ),
-          BottomNavigationBarItem(icon: Image.asset(Images.setting,color: _selectedIndex==2?Colors.white:Colors.grey,width: 25,height: 25,), label: Strings.setting,),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              Images.home,
+              color: _selectedIndex == 0 ? Colors.white : Colors.grey,
+              width: 25,
+              height: 25,
+            ),
+            label: Strings.home,
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              Images.document,
+              color: _selectedIndex == 1 ? Colors.white : Colors.grey,
+              width: 25,
+              height: 25,
+            ),
+            label: Strings.document,
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              Images.setting,
+              color: _selectedIndex == 2 ? Colors.white : Colors.grey,
+              width: 25,
+              height: 25,
+            ),
+            label: Strings.setting,
+          ),
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         iconSize: 40,
         onTap: (index) {
-         onClick(index);
+          onClick(index);
         },
         elevation: 5);
- }
+  }
+
+  Widget commonColumnWidget(double width, TextEditingController checkPointController, TextEditingController measureController, TextEditingController standardValueController, TextEditingController observationController, TextEditingController remarkController, TextEditingController justificationController) {
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: CommonUtils().commonRowTextField(false, false, width, checkPointController, Strings.checkPoint, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, measureController, Strings.unitOfMeasure, () {})),
+
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, standardValueController, Strings.standardValue, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, observationController, Strings.observation, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, remarkController, Strings.remark, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, justificationController, Strings.colors, () {})),
+      ],
+    );
+  }
+  Widget commonColumnPictureWidget(double width, TextEditingController checkPointController, TextEditingController measureController) {
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: CommonUtils().commonRowTextField(false, false, width, checkPointController, Strings.checkPoint, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, measureController, Strings.unitOfMeasure, () {})),
+      ],
+    );
+  }
+  Widget commonImprovementColumnWidget(double width, TextEditingController checkPointController, TextEditingController measureController, TextEditingController standardValueController,
+      TextEditingController observationController, TextEditingController remarkController, TextEditingController justificationController) {
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: CommonUtils().commonRowTextField(false, false, width, checkPointController, Strings.improvementPoint, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, measureController, Strings.purpose, () {})),
+
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, standardValueController, Strings.benefit, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, observationController, Strings.alreadyImplementedInOtherSystem, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, remarkController, Strings.date, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, justificationController, Strings.costumerDepartmentAcceptance, () {})),
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CommonUtils().commonRowTextField(false, false, width, justificationController, Strings.status, () {})),
+      ],
+    );
+  }
 }

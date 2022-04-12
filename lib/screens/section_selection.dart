@@ -17,6 +17,8 @@ class _SectionSelectionPageState extends State<SectionSelectionPage> {
 
    String dropDownValue= Strings.select;
    String dropDownStructuralValue= Strings.select;
+   String dropDownTechnologyValue= Strings.select;
+    String technologyStatus="0";
 
   List<String> selectionList = [
     Strings.select,
@@ -27,6 +29,14 @@ class _SectionSelectionPageState extends State<SectionSelectionPage> {
     Strings.select,
     Strings.buildingStructure,
     Strings.technologyAlliedStructure,
+  ];
+  List<String> selectTechnologyList = [
+    Strings.select,
+    Strings.conveyStructure,
+    Strings.junctionHouseStructure,
+    Strings.monorailStructure,
+    Strings.pipelineStructure,
+    Strings.platformStructure,
   ];
 
 
@@ -103,7 +113,7 @@ class _SectionSelectionPageState extends State<SectionSelectionPage> {
                             value: dropDownStructuralValue,
                             onChanged: (value) {
                               setState(() {
-                                Navigator.pushNamed(context, '/form', arguments: <String, String>{"status": "1"});
+                                if(value==Strings.buildingStructure) Navigator.pushNamed(context, '/form', arguments: <String, String>{"status": "1"});
                                 dropDownStructuralValue = value.toString();
                               });
                             },
@@ -116,6 +126,50 @@ class _SectionSelectionPageState extends State<SectionSelectionPage> {
                         ],
                       ),
                       visible: dropDownValue==Strings.structural,
+                    ),
+                    Visibility(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.only(bottom: 20, top: 30),
+                              child: Text(
+                                Strings.selectTechnologySelection,
+                                style: TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black),
+                              )),
+                          DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                              filled: true,
+                              hintStyle: TextStyle(color: Colors.grey),
+                              hintText: Strings.select,
+                            ),
+                            value: dropDownTechnologyValue,
+                            onChanged: (value) {
+                              setState(() {
+                                dropDownTechnologyValue = value.toString();
+                                for (var i = 0; i < selectTechnologyList.length; i++) {
+                                  if(dropDownTechnologyValue==selectTechnologyList[i]){
+                                    technologyStatus=i.toString();
+                                  }
+                                }
+                                Navigator.pushNamed(context, '/form', arguments: <String, String>{"status": "2","technology":technologyStatus});
+
+                              });
+                            },
+                            items: selectTechnologyList
+                                .map((selectionTitle) => DropdownMenuItem(
+                                value: selectionTitle, child: Text("$selectionTitle")))
+                                .toList(),
+                          ),
+
+                        ],
+                      ),
+                      visible: dropDownStructuralValue==Strings.technologyAlliedStructure,
                     )
                   ],
                 ))));

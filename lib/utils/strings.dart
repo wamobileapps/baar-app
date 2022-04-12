@@ -15,10 +15,17 @@ class Strings {
   static const select = "Select...";
   static const selectSelection = "Select Selection";
   static const selectStructuralSelection = "Select Structural Section";
+  static const selectTechnologySelection = "Select Technology Section";
   static const hydraulics = "Hydraulics";
   static const structural = "Structural";
   static const buildingStructure = "Building Structure";
   static const technologyAlliedStructure = "Technology/Allied Structure";
+  static const conveyStructure = "Convey or Gallery Structure";
+  static const conveyOr = "Convey or";
+  static const junctionHouseStructure = "Junction House Structure";
+  static const monorailStructure = "Monorail Structure";
+  static const pipelineStructure = "Pipeline-Duct Support Structure";
+  static const platformStructure = "Platform Structure";
   static const field = "Field";
   static const saveAsDraft = "Save as Draft";
   static const submit = "Submit";
@@ -72,5 +79,52 @@ class Strings {
   static const logout = "Logout";
   static const document = "Documents";
   static const setting = "Settings";
+  static const auditReportNo = "Audit Report No.";
+  static const departmentName = "Department Name";
+  static const equipmentName = "Equipment Name";
+  static const auditedBy = "Audited By";
+  static const departmentRepres = "Department Repres";
+  static const date = "Date";
+  static const workPermitNo = "Work Permit No.";
+  static const dateOfPreviousAudit = "Date Of Previous Audit";
+  static const previousAuditReport = "Previous Audit Report No.";
+  static const infoId = "Info Id.";
+  static const sectionType = "Section Type";
+  static const subSectionType = "Sub Section Type";
+  static const section = "Section";
+  static const reportId = "Report Id";
+  static const sapId = "Sap Id";
+  static const sapDescription = "Sap Description";
+  static const moNo = "Mo No";
+  static const department = "Department";
+  static const generalComments = "General Comments";
+  static const boosterPumpUnit = "Booster Pump Unit";
+  static const pilotPumpUnit = "Pilot Pump Unit";
+  static const offlineFilter = "offline Filter";
+  static const colors = "Colors";
+  static const actuator = "Actuator";
+  static const basicCondition = "Basic Condition";
+  static const otherComment = "Other Comments";
+  static const improvementCase = "Improvement Case";
   static const alreadyAccount = "Already have an account? ";
+  static const improvementPoint = "Improvement Point";
+  static const purpose = "Purpose";
+  static const benefit = "Benefit";
+  static const costumerDepartmentAcceptance = "Costumer Department Acceptance";
+  static const status = "Status";
+  static const picturePath = "Picture Path";
+  static const pictureDescription = "Picture Description";
+  static const craneGiderStairCase = "Crane Gider Stair Case";
+  static const column = "Column";
+  static const monorail = "Monorail";
+  static const columnsSaddle = "Columns Saddle";
+  static const alreadyImplementedInOtherSystem = "Already Implemented In Other System";
+
+
+
+
+
+
+
+
 }

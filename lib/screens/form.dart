@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-//import 'package:speech_recognition/speech_recognition.dart';
+import 'package:speech_recognition/speech_recognition.dart';
 import '../utils/common_widget.dart';
-import '../utils/custom_color.dart';
+
 import '../utils/strings.dart';
 
 const languages = const [
@@ -34,9 +34,9 @@ class _FormPageState extends State<FormPage> {
   final TextEditingController _fieldTwoController = TextEditingController();
   final TextEditingController _fieldThreeController = TextEditingController();
   final TextEditingController _fieldFourController = TextEditingController();
-  //late SpeechRecognition _speech;
+  late SpeechRecognition _speech;
 
- // bool _speechRecognitionAvailable = false;
+  bool _speechRecognitionAvailable = false;
   bool _isListening = false;
 
   String transcription = '';
@@ -48,6 +48,7 @@ class _FormPageState extends State<FormPage> {
 
   Language selectedLang = languages.first;
   var status = "0";
+  var technology = "0";
 
   var hintText = "";
 
@@ -81,11 +82,11 @@ class _FormPageState extends State<FormPage> {
   @override
   void initState() {
     super.initState();
-    //activateSpeechRecognizer();
+    activateSpeechRecognizer();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-/*  void activateSpeechRecognizer() {
+  void activateSpeechRecognizer() {
     print('_MyAppState.activateSpeechRecognizer... ');
     _speech = new SpeechRecognition();
     _speech.setAvailabilityHandler(onSpeechAvailability);
@@ -94,15 +95,15 @@ class _FormPageState extends State<FormPage> {
     _speech.setRecognitionResultHandler(onRecognitionResult);
     _speech.setRecognitionCompleteHandler(onRecognitionComplete);
     _speech.activate().then((res) => setState(() => _speechRecognitionAvailable = res));
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     status = args["status"] ?? "0";
+    technology = args["technology"] ?? "0";
 
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
 
     return SafeArea(
         child: Scaffold(
@@ -110,20 +111,20 @@ class _FormPageState extends State<FormPage> {
             /*drawer: CommonUtils().commonDrawerWidget(context),*/
             resizeToAvoidBottomInset: false,
             appBar: PreferredSize(preferredSize: const Size.fromHeight(80), child: CommonUtils().customAppBar(width, context, true, null)),
-            body: Container(
+            body: SingleChildScrollView(child: Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.only(left: 30,right: 30,top:30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 30),
+                        padding: const EdgeInsets.only( bottom: 30),
                         child: Text(
-                          status == "0" ? Strings.hydraulics : Strings.buildingStructure,
+                          status == "0" ? Strings.hydraulics : status=="1" ? Strings.buildingStructure:Strings.technologyAlliedStructure,
                           style: const TextStyle(fontFamily: 'Inter', fontStyle: FontStyle.normal, fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
                         )),
-                    CommonUtils().commonRowField(width, _fieldOneController, " 1", () {
-                      //_speechRecognitionAvailable && !_isListening ? start() : null;
+                    CommonUtils().commonRowField(width, _fieldOneController, status == "0" ? Strings.auditReportNo:Strings.infoId, () {
+                      _speechRecognitionAvailable && !_isListening ? start() : null;
                       setState(() {
                         isActive = true;
                         isActiveOne = false;
@@ -139,13 +140,14 @@ class _FormPageState extends State<FormPage> {
                         getImage();
                       });
                     }, isActive),
-                    CommonUtils().commonRowField(width, _fieldTwoController, " 2", () {
+                    CommonUtils().commonRowField(width, _fieldTwoController, status == "0" ? Strings.departmentName:Strings.sectionType, () {
                       setState(() {
                         isActive = false;
                         isActiveOne = true;
                         isActiveTwo = false;
                         isActiveThree = false;
                       });
+                      _speechRecognitionAvailable && !_isListening ? start() : null;
                     }, () {
                       CommonUtils().showBottomSheetImagePicker(context, width, () {
                         Navigator.pop(context);
@@ -155,7 +157,7 @@ class _FormPageState extends State<FormPage> {
                         getImage();
                       });
                     }, isActiveOne),
-                    CommonUtils().commonRowField(width, _fieldThreeController, " 3", () {
+                    CommonUtils().commonRowField(width, _fieldThreeController, status == "0" ? Strings.equipmentName:Strings.subSectionType, () {
                       setState(() {
                         isActive = false;
                         isActiveOne = false;
@@ -171,7 +173,7 @@ class _FormPageState extends State<FormPage> {
                         getImage();
                       });
                     }, isActiveTwo),
-                    CommonUtils().commonRowField(width, _fieldFourController, " 4", () {
+                 CommonUtils().commonRowField(width, _fieldFourController, status == "0" ? Strings.auditedBy:Strings.section, () {
                       setState(() {
                         isActive = false;
                         isActiveOne = false;
@@ -187,15 +189,92 @@ class _FormPageState extends State<FormPage> {
                         getImage();
                       });
                     }, isActiveThree),
-                    Container(
-                        height: height / 2.8,
-                        alignment: Alignment.bottomCenter,
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Row(
+
+                    CommonUtils().commonRowField(width, _fieldFourController, status == "0" ? Strings.departmentRepres:Strings.reportId, () {
+                      setState(() {
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = true;
+                      });
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveThree),
+
+                    CommonUtils().commonRowField(width, _fieldFourController, status == "0" ? Strings.date:Strings.sapId, () {
+                      setState(() {
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = true;
+                      });
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveThree), CommonUtils().commonRowField(width, _fieldFourController, status == "0" ? Strings.workPermitNo:Strings.sapDescription, () {
+                      setState(() {
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = true;
+                      });
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveThree),
+                    CommonUtils().commonRowField(width, _fieldFourController, status == "0" ? Strings.dateOfPreviousAudit:Strings.moNo, () {
+                      setState(() {
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = true;
+                      });
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveThree), CommonUtils().commonRowField(width, _fieldFourController, status == "0" ? Strings.previousAuditReport:Strings.department, () {
+                      setState(() {
+                        isActive = false;
+                        isActiveOne = false;
+                        isActiveTwo = false;
+                        isActiveThree = true;
+                      });
+                    }, () {
+                      CommonUtils().showBottomSheetImagePicker(context, width, () {
+                        Navigator.pop(context);
+                        getCamera();
+                      }, () {
+                        Navigator.pop(context);
+                        getImage();
+                      });
+                    }, isActiveThree),
+                    SizedBox(height: 10,),
+                    Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CommonUtils().customButton(Size(width / 4.5, 40), Strings.submit, () {
-                              Navigator.pushNamed(context, status == "0" ? '/formHydraulic' : '/formBuilding');
+                              Navigator.pushNamed(context, status == "0" ? '/formHydraulic' : '/formBuilding',arguments: <String, String>{"status": status,"technology": technology});
                             }, 14),
                             CommonUtils().customButton(Size(width / 4, 40), Strings.saveAsDraft, () {
                               Navigator.pushNamed(context, '/draft');
@@ -204,18 +283,18 @@ class _FormPageState extends State<FormPage> {
                               Navigator.pushReplacementNamed(context, '/home');
                             }, 14),
                           ],
-                        ))
+                        )
                   ],
-                ))));
+                )))));
   }
 
-  /*void start() => _speech.listen(locale: selectedLang.code).then((result) => {
+  void start() => _speech.listen(locale: selectedLang.code).then((result) => {
         print('_MyAppState.start => result ${result}'),
       });
 
   void cancel() => _speech.cancel().then((result) => setState(() => _isListening = result));
 
-  void stop() => _speech.stop().then((result) => setState(() => {_isListening = result, isActive = false}));*/
+  void stop() => _speech.stop().then((result) => setState(() => {_isListening = result, isActive = false}));
 
   void onSpeechAvailability(bool result) => setState(() => {if (!result) isActive = false});
 
